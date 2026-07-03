@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "9360155b-f725-4b07-9e32-09405fcb414a",
+		"name": "Spotter AI - Fuel Optimization",
+		"description": "API collection for the Spotter AI fuel route optimization service.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Calculate Optimal Route",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"start\": \"Dallas, TX\",\n    \"destination\": \"Chicago, IL\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/routes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"routes",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
