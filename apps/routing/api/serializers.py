@@ -82,3 +82,17 @@ class RouteResponseSerializer(serializers.Serializer):
     trip_summary = TripSummarySerializer(help_text="Trip summary information")
     fuel_stops = FuelStopSchemaSerializer(many=True, help_text="Ordered list of fuel stops")
     route = RouteGeometrySchemaSerializer(help_text="Route geometry")
+
+
+class SearchSerializer(serializers.Serializer):
+    """Serializer for search endpoint."""
+    q = serializers.CharField(required=True, help_text="Search query")
+    limit = serializers.IntegerField(required=False, default=10, help_text="Max results")
+
+
+class PriceFilterSerializer(serializers.Serializer):
+    """Serializer for price filter endpoint."""
+    state = serializers.CharField(required=False, help_text="Filter by state")
+    city = serializers.CharField(required=False, help_text="Filter by city")
+    limit = serializers.IntegerField(required=False, default=20, help_text="Max results")
+    sort = serializers.ChoiceField(choices=['asc', 'desc'], required=False, default='asc')
