@@ -176,8 +176,10 @@ python manage.py runserver
 ### Interactive Swagger UI
 Explore and test the API live at: 👉 `http://localhost:8000/api/docs/`
 
-### Calculate Route & Fuel Stops
+### 1. Calculate Route & Fuel Stops
 **`POST /api/v1/routes/`**
+
+Calculate an optimal driving route with cost-minimized fuel stops between two USA locations.
 
 **Request:**
 ```json
@@ -219,6 +221,43 @@ Explore and test the API live at: 👉 `http://localhost:8000/api/docs/`
   }
 }
 ```
+
+### 2. Health Check
+**`GET /api/v1/health/`**
+
+Verify that all system dependencies (Database, Redis, OpenRouteService API) are operational. Useful for monitoring and load balancer health checks. Returns a `200 OK` if healthy, or `503 Service Unavailable` if degraded.
+
+### 3. Search Locations
+**`GET /api/v1/search/`**
+
+Search for US cities and states to help users discover valid start/destination locations. Returns matching cities along with station counts and price statistics (average, min, max) for each location. Perfect for autocomplete or search-as-you-type functionality in frontend applications.
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | `string` | Yes | Search query (e.g., "phoenix", "dallas", "tx") |
+| `limit` | `integer`| No | Max results to return (default: 10) |
+
+### 4. Fuel Prices & Statistics
+**`GET /api/v1/prices/`**
+
+Retrieve fuel price data, statistics, and find the cheapest stations by state, city, or nationwide. Frontend applications can use this to display price trends, show the cheapest stations in a region, or help users make informed decisions.
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `state` | `string` | No | Filter by 2-letter state code (e.g., "TX") |
+| `city` | `string` | No | Filter by city name (e.g., "Dallas") |
+| `limit` | `integer`| No | Max stations to return (default: 20) |
+| `sort` | `string` | No | Sort by price: `asc` (cheapest first) or `desc` (most expensive first) |
+
+### 📊 API Endpoints Summary
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/routes/` | Calculate optimal route with fuel stops |
+| `GET`  | `/api/v1/health/` | Check system health status |
+| `GET`  | `/api/v1/search/` | Search for US cities and states |
+| `GET`  | `/api/v1/prices/` | Get fuel prices and statistics |
 
 ---
 
