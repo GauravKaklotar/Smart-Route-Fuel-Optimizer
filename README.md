@@ -123,10 +123,6 @@ docker compose up -d
 docker compose exec web python manage.py import_csv
 docker compose exec web python manage.py geocode_stations
 
-# Optional: Seed test data for immediate validation
-docker compose exec web python manage.py add_test_data
-docker compose exec web python manage.py add_missing_stations
-
 # API accessible at: http://localhost:8000/api/docs/
 ```
 
