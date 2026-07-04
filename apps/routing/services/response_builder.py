@@ -11,6 +11,13 @@ from apps.routing.services.routing_service import RouteResult
 class ResponseBuilder:
     """Assembles the final API response dictionary."""
 
+    def _format_duration(self, seconds: float) -> str:
+        """Format duration as HH:MM:SS."""
+        hours = int(seconds // 3600)
+        minutes = int((seconds % 3600) // 60)
+        secs = int(seconds % 60)
+        return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
     def build(
         self,
         route_result: RouteResult,
@@ -27,6 +34,7 @@ class ResponseBuilder:
             Dictionary matching the API specification.
         """
         total_fuel_cost = sum(stop.cost for stop in fuel_stops)
+        total_gallons = sum(stop.gallons_purchased for stop in fuel_stops)
 
         formatted_stops = []
         for stop in fuel_stops:
@@ -44,15 +52,18 @@ class ResponseBuilder:
             })
 
         return {
-            "distance": round(route_result.distance_miles, 2),
-            "duration": round(route_result.duration_seconds, 2),
-            "total_fuel_cost": round(total_fuel_cost, 2),
+            "trip_summary": {
+                "distance_miles": round(route_result.distance_miles, 2),
+                "duration_seconds": round(route_result.duration_seconds, 2),
+                "duration_formatted": self._format_duration(route_result.duration_seconds),
+                "total_fuel_cost": round(total_fuel_cost, 2),
+                "total_gallons": round(total_gallons, 3),
+                "fuel_stops_count": len(fuel_stops),
+                "average_price": round(total_fuel_cost / total_gallons, 3) if total_gallons > 0 else 0
+            },
             "fuel_stops": formatted_stops,
             "route": {
                 "polyline": route_result.encoded_polyline,
-                # Convert list of tuples to list of dicts for clearer JSON, or array of arrays
-                # The spec says "coordinates": [...]
-                # We'll use [lon, lat] arrays to be standard GeoJSON-like
                 "coordinates": [[lon, lat] for lon, lat in route_result.coordinates_lonlat]
             }
         }

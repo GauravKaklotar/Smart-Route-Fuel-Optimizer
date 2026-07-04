@@ -101,7 +101,7 @@ class StationLocator:
         simplified_line = route_line.simplify(0.01, preserve_topology=False)
         
         # Radius in radians for BallTree
-        radius_radians = buffer_miles / EARTH_RADIUS_MILES
+        radius_radians = (buffer_miles * 2) / EARTH_RADIUS_MILES
         
         # Query BallTree for all points in simplified line
         query_points = np.array([

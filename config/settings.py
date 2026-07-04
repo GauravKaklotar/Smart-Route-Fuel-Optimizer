@@ -105,14 +105,19 @@ DATABASES = {
 # Cache — Redis
 # ---------------------------------------------------------------------------
 
+REDIS_URL = os.getenv(
+    "REDIS_URL",
+    f"redis://{os.getenv('REDIS_HOST', 'redis')}:{os.getenv('REDIS_PORT', '6379')}/0",
+)
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+        "LOCATION": REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
-        "TIMEOUT": 3600,  # 1 hour default TTL
+        "TIMEOUT": 3600,
     }
 }
 

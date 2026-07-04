@@ -22,6 +22,26 @@ done
 
 echo "✅ PostgreSQL is ready!"
 
+echo "🔄 Waiting for Redis to be ready..."
+
+while ! python -c "
+import socket
+import os
+
+host = os.getenv('REDIS_HOST', 'redis')
+port = int(os.getenv('REDIS_PORT', '6379'))
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+result = sock.connect_ex((host, port))
+sock.close()
+exit(result)
+" 2>/dev/null; do
+    echo "⏳ Redis is not ready yet — retrying in 2s..."
+    sleep 2
+done
+
+echo "✅ Redis is ready!"
+
 echo "🔄 Running database migrations..."
 python manage.py migrate --noinput
 

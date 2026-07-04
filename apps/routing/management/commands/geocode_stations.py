@@ -79,7 +79,7 @@ class Command(BaseCommand):
                 
             # Rate limiting for ORS (Standard tier allows ~40 req/min)
             # Sleep 1.5 seconds between requests (40/min)
-            time.sleep(1.5)
+            time.sleep(1.2)
 
         self.stdout.write(
             self.style.SUCCESS(

@@ -66,10 +66,19 @@ class RouteGeometrySchemaSerializer(serializers.Serializer):
     )
 
 
+class TripSummarySerializer(serializers.Serializer):
+    """Schema for trip summary."""
+    distance_miles = serializers.FloatField(help_text="Total distance in miles")
+    duration_seconds = serializers.FloatField(help_text="Total duration in seconds")
+    duration_formatted = serializers.CharField(help_text="Formatted duration (HH:MM:SS)")
+    total_fuel_cost = serializers.FloatField(help_text="Total cost of all fuel stops")
+    total_gallons = serializers.FloatField(help_text="Total gallons purchased")
+    fuel_stops_count = serializers.IntegerField(help_text="Number of fuel stops")
+    average_price = serializers.FloatField(help_text="Average price per gallon")
+
+
 class RouteResponseSerializer(serializers.Serializer):
     """Schema for the complete route response (used for Swagger)."""
-    distance = serializers.FloatField(help_text="Total distance in miles")
-    duration = serializers.FloatField(help_text="Total duration in seconds")
-    total_fuel_cost = serializers.FloatField(help_text="Total cost of all fuel stops")
+    trip_summary = TripSummarySerializer(help_text="Trip summary information")
     fuel_stops = FuelStopSchemaSerializer(many=True, help_text="Ordered list of fuel stops")
-    route = RouteGeometrySchemaSerializer()
+    route = RouteGeometrySchemaSerializer(help_text="Route geometry")
