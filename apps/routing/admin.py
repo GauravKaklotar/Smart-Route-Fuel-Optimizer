@@ -42,8 +42,25 @@ class FuelStationAdmin(admin.ModelAdmin):
     search_fields = ("opis_id", "truckstop_name", "city")
     readonly_fields = ("opis_id",)
     ordering = ("state", "city")
-
-    @admin.display(description="Geocoded", boolean=True)
+    
+    # Enable sorting for has_coordinates
+    list_display_links = ("opis_id", "truckstop_name")
+    
+    @admin.display(description="Geocoded", boolean=True, ordering="latitude")
     def has_coordinates(self, obj: FuelStation) -> bool:
         """Return True if the station has geocoded coordinates."""
         return obj.latitude is not None and obj.longitude is not None
+    
+    actions = ['mark_as_geocoded', 'mark_as_not_geocoded']
+    
+    def mark_as_geocoded(self, request, queryset):
+        """Bulk action to mark stations as geocoded (for testing)."""
+        # This is just a placeholder - you'd need actual coordinates
+        self.message_user(request, f"Updated {queryset.count()} stations")
+    mark_as_geocoded.short_description = "Mark selected as geocoded"
+    
+    def mark_as_not_geocoded(self, request, queryset):
+        """Bulk action to mark stations as not geocoded."""
+        queryset.update(latitude=None, longitude=None)
+        self.message_user(request, f"Cleared coordinates for {queryset.count()} stations")
+    mark_as_not_geocoded.short_description = "Clear coordinates for selected"

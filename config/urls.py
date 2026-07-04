@@ -11,6 +11,9 @@ Routes:
 from django.contrib import admin
 from django.urls import include, path
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView,
@@ -29,3 +32,8 @@ urlpatterns = [
         name="swagger-ui",
     ),
 ]
+
+
+# ONLY serve static files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

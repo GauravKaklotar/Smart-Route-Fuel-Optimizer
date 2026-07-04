@@ -1,0 +1,21 @@
+#header {
+    background: #1a237e;
+}
+
+#branding h1 {
+    color: white;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.module caption {
+    background: #0d47a1;
+}
+
+.button, input[type=submit] {
+    background: #1a237e;
+}
+
+.field-retail_price {
+    font-weight: bold;
+}

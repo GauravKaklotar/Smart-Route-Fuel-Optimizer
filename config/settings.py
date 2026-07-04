@@ -148,6 +148,13 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+
 # ---------------------------------------------------------------------------
 # Default Primary Key
 # ---------------------------------------------------------------------------
